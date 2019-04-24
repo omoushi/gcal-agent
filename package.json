@@ -1,15 +1,20 @@
 {
   "name": "gcal-agent",
   "version": "1.0.0",
-  "description": "",
+  "description": "google calendar agent",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "omoushi",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omoushi/gcal-agent.git"
+  },
   "devDependencies": {
-    "@google/clasp": "^2.1.0"
+    "@google/clasp": "^2.1.0",
+    "@types/google-apps-script": "0.0.44"
   }
 }
