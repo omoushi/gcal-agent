@@ -4,7 +4,9 @@
   "description": "google calendar agent",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "clasp-push": "clasp push",
+    "clasp-run": "clasp run"
   },
   "keywords": [],
   "author": "omoushi",

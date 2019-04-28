@@ -14,3 +14,7 @@ pids
 
 # Dependency directories
 node_modules/
+
+# Clasp
+.clasprc.json
+creds.json
