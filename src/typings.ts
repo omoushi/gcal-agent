@@ -17,9 +17,9 @@ export type SlackEventParameter = EventParameter & {
  * @see https://developers.google.com/apps-script/guides/properties
  */
 export type ScriptProps = {
-    slack_secret: string
+    slack_signed_secret: string
     calendar_id: string
-    token: string
+    slack_token: string
 }
 
 //////////////////////////////////////////////////////////////////
