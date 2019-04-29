@@ -1,12 +1,7 @@
 import ScriptProperties = GoogleAppsScript.Properties.ScriptProperties
+import { ScriptProps } from "./typings"
 
-export type GasProps = {
-    verify_token: string
-    calendar_id: string
-    token: string
-}
-
-export function scriptProperties(): GasProps {
+export function scriptProperties(): ScriptProps {
     const scriptProperties: ScriptProperties = PropertiesService.getScriptProperties()
-    return scriptProperties.getProperties() as GasProps;
+    return scriptProperties.getProperties() as ScriptProps;
 }

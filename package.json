@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "clasp-push": "clasp push",
-    "clasp-run": "clasp run"
+    "clasp-do-post": "clasp run doPost --params \"$(cat test/resources/example_event_parameter.json)\""
   },
   "keywords": [],
   "author": "omoushi",
