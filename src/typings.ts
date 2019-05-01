@@ -22,6 +22,14 @@ export type ScriptProps = {
     slack_token: string
 }
 
+/**
+ * Response type that slack slash command expects.
+ * @see https://api.slack.com/slash-commands
+ */
+export type SlackResponse = {
+    text: string
+}
+
 //////////////////////////////////////////////////////////////////
 // Google Apps Script Domain Types
 //////////////////////////////////////////////////////////////////
