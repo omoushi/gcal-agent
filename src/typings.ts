@@ -9,6 +9,7 @@
 export type SlackEventParameter = EventParameter & {
     parameter: {
         signed_secret: string
+        text: string
     }
 }
 
@@ -23,11 +24,17 @@ export type ScriptProps = {
 }
 
 /**
- * Response type that slack slash command expects.
- * @see https://api.slack.com/slash-commands
+ * Argument bundle type of `Calendar.createEvent`
  */
-export type SlackResponse = {
-    text: string
+export type GcalEventArgs = {
+    title: string,
+    startDate: Date,
+    endDate: Date
+}
+
+export type ValidationResult = {
+    isValid: boolean
+    message?: string
 }
 
 //////////////////////////////////////////////////////////////////
@@ -55,3 +62,16 @@ type EventParameter = {
         name: 'postData'
     }
 }
+
+//////////////////////////////////////////////////////////////////
+// Slack Domain Types
+//////////////////////////////////////////////////////////////////
+
+/**
+ * Response type that slack slash command expects.
+ * @see https://api.slack.com/slash-commands
+ */
+export type SlackResponse = {
+    text: string
+}
+
