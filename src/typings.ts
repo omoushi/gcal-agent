@@ -32,10 +32,9 @@ export type GcalEventArgs = {
     endDate: Date
 }
 
-export type ValidationResult = {
-    isValid: boolean
-    message?: string
-}
+export type AnalysisOk = { isOk: true, error: '', result: GcalEventArgs }
+export type AnalysisNg = { isOk: false, error: string, result: null }
+export type AnalysisResult = AnalysisNg | AnalysisOk
 
 //////////////////////////////////////////////////////////////////
 // Google Apps Script Domain Types
