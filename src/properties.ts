@@ -1,5 +1,5 @@
 import ScriptProperties = GoogleAppsScript.Properties.ScriptProperties;
-import { ScriptProps } from "./api/types";
+import { ScriptProps } from "./types";
 
 export function scriptProperties(): ScriptProps {
     const scriptProperties: ScriptProperties = PropertiesService.getScriptProperties();

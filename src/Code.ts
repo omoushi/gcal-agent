@@ -1,9 +1,9 @@
 import { scriptProperties } from "./properties"
 import TextOutput = GoogleAppsScript.Content.TextOutput;
-import { AnalysisResult, ScriptProps, SlackEventParameter, SlackResponse } from "./api/types";
-import { verify } from "./impl/verifier";
-import { analyze } from "./impl/analyzer";
-import { createEvent, toTextOutput } from "./impl/gas";
+import { AnalysisResult, ScriptProps, SlackEventParameter, SlackResponse } from "./types";
+import { verify } from "./verifier";
+import { analyze } from "./analyzer";
+import { createEvent, toTextOutput } from "./gas";
 
 export function doPost(e: SlackEventParameter): TextOutput {
     const scriptProps: ScriptProps = scriptProperties();

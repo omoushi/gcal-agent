@@ -1,4 +1,4 @@
-import { AnalysisNg, AnalysisOk, AnalysisResult, GcalEventArgs } from "../api/types";
+import { AnalysisNg, AnalysisOk, AnalysisResult, GcalEventArgs } from "./types";
 import { extractableDate, extractDate } from "./dateExtractor";
 
 export function analyze(inputText: string): AnalysisResult {

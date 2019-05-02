@@ -1,7 +1,7 @@
-import { analyze } from "../src/impl/analyzer";
-import { extractableDate, extractDate } from "../src/impl/dateExtractor";
+import { analyze } from "../src/analyzer";
+import { extractableDate, extractDate } from "../src/dateExtractor";
 
-jest.mock('../src/impl/dateExtractor');
+jest.mock('../src/dateExtractor');
 const mockExtractDate = <jest.Mock<{ date: Date, error?: string }, [string]>>extractDate;
 const mockExtractableDate = <jest.Mock<boolean, [string]>>extractableDate;
 

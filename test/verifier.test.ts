@@ -1,4 +1,4 @@
-import { verify } from "../src/impl/verifier"
+import { verify } from "../src/verifier"
 
 describe('verify', () => {
     describe('when client differs from server', () => {

@@ -1,7 +1,7 @@
-import { provideNow } from "../src/impl/dateProvider";
-import { extractDate } from "../src/impl/dateExtractor";
+import { provideNow } from "../src/dateProvider";
+import { extractDate } from "../src/dateExtractor";
 
-jest.mock('../src/impl/dateProvider');
+jest.mock('../src/dateProvider');
 const mockProvideNow = <jest.Mock<Date>>provideNow;
 mockProvideNow.mockReturnValue(new Date('2019-5-4'));
 

@@ -1,4 +1,4 @@
-import { GcalEventArgs, SlackResponse } from "../api/types";
+import { GcalEventArgs, SlackResponse } from "./types";
 
 export function toTextOutput(response: SlackResponse): GoogleAppsScript.Content.TextOutput {
     return ContentService
