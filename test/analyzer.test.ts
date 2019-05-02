@@ -1,10 +1,12 @@
 import { analyze } from "../src/impl/analyzer";
-import { extractDate } from "../src/impl/dateExtractor";
+import { extractableDate, extractDate } from "../src/impl/dateExtractor";
 
 jest.mock('../src/impl/dateExtractor');
 const mockExtractDate = <jest.Mock<{ date: Date, error?: string }, [string]>>extractDate;
+const mockExtractableDate = <jest.Mock<boolean, [string]>>extractableDate;
 
 describe('analyze', () => {
+    const year = 2019, month = 5, day = 4;
 
     describe('when text has multiple lines', () => {
         const multiLineWord = '16\n17';
@@ -39,12 +41,47 @@ describe('analyze', () => {
         });
 
         describe('when dateExtractor could extract date', () => {
-            const year = 2019, month = 5, day = 4;
             beforeEach(() => mockExtractDate.mockReturnValue({ date: new Date(year, month, day) }));
 
             it('analysis is ok', () => expect(analyze(validOneWord).isOk).toBe(true));
             it('start date has 13 (default)', () => expect(analyze(validOneWord).result.startDate.getHours()).toBe(13));
             it('end date has 18 (default)', () => expect(analyze(validOneWord).result.endDate.getHours()).toBe(18));
+        });
+    });
+
+    describe('withTwoWord', () => {
+        const validTwoWord = 'word1 word2';
+
+        describe('when dateExtractor regard both word1 and word2 as date', () => {
+            beforeEach(() => mockExtractableDate.mockImplementation(args => args === 'word1' || args === 'word2'));
+
+            it('analysis is not ok', () => expect(analyze(validTwoWord).isOk).toBe(false));
+            it('error message exists', () => expect(analyze(validTwoWord).error).toBe('ごめん！連日登録はまだ対応してない！'));
+        });
+
+        describe('when dateExtractor regard neither word1 nor word2 as date', () => {
+            beforeEach(() => mockExtractableDate.mockImplementation(args => args !== 'word1' && args !== 'word2'));
+
+            it('analysis is not ok', () => expect(analyze(validTwoWord).isOk).toBe(false));
+            it('error message exists', () => expect(analyze(validTwoWord).error).toBe('日付がわかりませんでした。'));
+        });
+
+        describe('when dateExtractor regard word1 as date', () => {
+            beforeEach(() => mockExtractableDate.mockImplementation(args => args === 'word1'));
+            beforeEach(() => mockExtractDate.mockReturnValue({ date: new Date(year, month, day) }));
+
+            it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
+            it('start date has 13 (default)', () => expect(analyze(validTwoWord).result.startDate.getHours()).toBe(13));
+            it('end date has 18 (default)', () => expect(analyze(validTwoWord).result.endDate.getHours()).toBe(18));
+        });
+
+        describe('when dateExtractor regard word2 as date', () => {
+            beforeEach(() => mockExtractableDate.mockImplementation(args => args === 'word2'));
+            beforeEach(() => mockExtractDate.mockReturnValue({ date: new Date(year, month, day) }));
+
+            it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
+            it('start date has 13 (default)', () => expect(analyze(validTwoWord).result.startDate.getHours()).toBe(13));
+            it('end date has 18 (default)', () => expect(analyze(validTwoWord).result.endDate.getHours()).toBe(18));
         });
     });
 });

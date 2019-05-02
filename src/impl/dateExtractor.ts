@@ -1,5 +1,16 @@
 import { provideNow } from "./dateProvider";
 
+const Patterns = {
+    BASIC_MONTH_DATE: /^(\d{1,2})\/(\d{1,2})$/,
+    BASIC_DATE: /^(\d{1,2})$/,
+    BASIC_HOUR_MINUTE: /^(\d{1,2}):(\d{1,2})$/,
+    BASIC_HOUR: /^(\d{1,2})$/,
+    JAPANESE_MONTH_DATE: /^(\d{1,2})月(\d{1,2})日$/,
+    JAPANESE_DATE: /^(\d{1,2})日$/,
+    JAPANESE_HOUR_MINUTE: /^(\d{1,2})時(\d{1,2})分$/,
+    JAPANESE_HOUR: /^(\d{1,2})時$/
+};
+
 export function extractDate(word: string): { date: Date, error?: string } {
     const now = provideNow();
     let matching: RegExpMatchArray | null;
@@ -27,13 +38,11 @@ function convert(month: number, day: number, now: Date): { date: Date, error?: s
     return { date: date };
 }
 
-const Patterns = {
-    BASIC_MONTH_DATE: /^(\d{1,2})\/(\d{1,2})$/,
-    BASIC_DATE: /^(\d{1,2})$/,
-    BASIC_HOUR_MINUTE: /^(\d{1,2}):(\d{1,2})$/,
-    BASIC_HOUR: /^(\d{1,2})$/,
-    JAPANESE_MONTH_DATE: /^(\d{1,2})月(\d{1,2})日$/,
-    JAPANESE_DATE: /^(\d{1,2})日$/,
-    JAPANESE_HOUR_MINUTE: /^(\d{1,2})時(\d{1,2})分$/,
-    JAPANESE_HOUR: /^(\d{1,2})時$/
-};
+export function extractableDate(word: string): boolean {
+    return [
+        Patterns.BASIC_MONTH_DATE,
+        Patterns.BASIC_DATE,
+        Patterns.JAPANESE_MONTH_DATE,
+        Patterns.JAPANESE_DATE
+    ].some(pattern => pattern.test(word));
+}

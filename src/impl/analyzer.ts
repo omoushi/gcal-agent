@@ -1,5 +1,5 @@
 import { AnalysisNg, AnalysisOk, AnalysisResult, GcalEventArgs } from "../api/types";
-import { extractDate } from "./dateExtractor";
+import { extractableDate, extractDate } from "./dateExtractor";
 
 export function analyze(inputText: string): AnalysisResult {
     if (inputText === '') {
@@ -27,18 +27,44 @@ function ok(result: GcalEventArgs): AnalysisOk {
     return { isOk: true, error: '', result };
 }
 
+/**
+ * @param word is regarded as day number.
+ */
 function withOneWord(word: string): AnalysisResult {
     const { date, error } = extractDate(word);
     if (!error) {
-        const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 13, 0);
-        const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 18, 0);
-        const result: GcalEventArgs = { title: 'もくもく会', startDate, endDate };
-        return ok(result);
+        return ok(makeGcalEventArgs(date));
     } else {
         return ng(error);
     }
 }
 
+/**
+ * @param word1 is regarded as day number or title
+ * @param word2 is regarded as day number or title
+ */
 function withTwoWord(word1: string, word2: string): AnalysisResult {
-    return ok(null);
+    const isWord1Date = extractableDate(word1);
+    const isWord2Date = extractableDate(word2);
+    if (isWord1Date && isWord2Date) {
+        return { isOk: false, error: 'ごめん！連日登録はまだ対応してない！', result: null };
+    } else if (isWord1Date) {
+        const { date } = extractDate(word1);
+        return ok(makeGcalEventArgs(date, word2));
+    } else if (isWord2Date) {
+        const { date } = extractDate(word2);
+        return ok(makeGcalEventArgs(date, word1));
+    } else {
+        return { isOk: false, error: '日付がわかりませんでした。', result: null };
+    }
+}
+
+const DEFAULT_TITLE = 'もくもく会';
+const DEFAULT_START_HOUR = 13;
+const DEFAULT_END_HOUR = 18;
+
+function makeGcalEventArgs(date, title = DEFAULT_TITLE) {
+    const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), DEFAULT_START_HOUR, 0);
+    const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), DEFAULT_END_HOUR, 0);
+    return { title: (title || DEFAULT_TITLE), startDate, endDate };
 }
