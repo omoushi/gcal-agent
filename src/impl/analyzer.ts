@@ -1,4 +1,4 @@
-import { AnalysisNg, AnalysisOk, AnalysisResult, Analyzer as IAnalyzer, GcalEventArgs } from "./api/types";
+import { AnalysisNg, AnalysisOk, AnalysisResult, Analyzer as IAnalyzer, GcalEventArgs } from "../api/types";
 
 class Analyzer implements IAnalyzer {
     analyze(inputText: string): AnalysisResult {

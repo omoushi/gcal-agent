@@ -1,10 +1,9 @@
 import { doPost } from "../src/Code"
 import exampleEventParameter from "./resources/example_event_parameter.json"
 import exampleScriptProperties from "./resources/example_script_properties.json"
-import { ScriptProps, SlackEventParameter } from "../src/typings"
 import * as properties from '../src/properties'
 import * as gas from '../src/gas'
-import { AnalysisResult } from "../src/api/types";
+import { AnalysisResult, ScriptProps, SlackEventParameter } from "../src/api/types";
 import TextOutput = GoogleAppsScript.Content.TextOutput;
 import { analyzer, verifier } from "../src/api/provider";
 
