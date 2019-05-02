@@ -1,11 +1,12 @@
 {
   "queryString": "",
   "parameter": {
-    "signed_secret": "slack signed secret",
+    "token": "slack signed secret",
     "text": ""
   },
   "parameters": {
-    "signed_secret": ["slack signed secret"]
+    "token": ["slack signed secret"],
+    "text": [""]
   },
   "contextPath": "",
   "contentLength": 0

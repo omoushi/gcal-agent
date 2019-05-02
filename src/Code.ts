@@ -1,6 +1,6 @@
 import { scriptProperties } from "./properties"
 import TextOutput = GoogleAppsScript.Content.TextOutput;
-import { AnalysisResult, ScriptProps, SlackEventParameter, SlackResponse } from "./types";
+import { ScriptProps, SlackEventParameter, SlackResponse } from "./types";
 import { verify } from "./verifier";
 import { analyze } from "./analyzer";
 import { createEvent, toTextOutput } from "./gas";
@@ -12,12 +12,15 @@ export function doPost(e: SlackEventParameter): TextOutput {
 }
 
 function doProcess(e: SlackEventParameter, scriptProps: ScriptProps): SlackResponse {
-    verify(scriptProps.slack_signed_secret, e.parameter.signed_secret);
-    const analysisResult: AnalysisResult = analyze(e.parameter.text);
-    if (analysisResult.isOk) {
-        const title = createEvent(scriptProps.calendar_id, analysisResult.result);
+    const verification = verify(scriptProps.slack_verification_token, e.parameter.token);
+    if (!verification.isOk) {
+        return { text: verification.error };
+    }
+    const analysis = analyze(e.parameter.text);
+    if (analysis.isOk) {
+        const title = createEvent(scriptProps.calendar_id, analysis.result);
         return { text: `予定「${title}」をカレンダーに登録しました。` };
     } else {
-        return { text: analysisResult.error };
+        return { text: analysis.error };
     }
 }

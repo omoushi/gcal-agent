@@ -1,4 +1,4 @@
 {
   "calendar_id": "",
-  "slack_signed_secret": "slack signed secret"
+  "slack_verification_token": "slack signed secret"
 }

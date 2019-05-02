@@ -5,14 +5,17 @@
 export type AnalysisOk = { isOk: true, error: '', result: GcalEventArgs }
 export type AnalysisNg = { isOk: false, error: string, result: null }
 export type AnalysisResult = AnalysisNg | AnalysisOk
+export type VerificationOk = { isOk: true, error: '' }
+export type VerificationNg = { isOk: false, error: string }
+export type Verification = VerificationOk | VerificationNg
 
 /**
  * EventParameter when Slack requests
- * `signed_secret` is [slack secret value to verify](https://api.slack.com/docs/verifying-requests-from-slack)
+ * `token` is [slack secret value to verify](https://api.slack.com/docs/verifying-requests-from-slack)
  */
 export type SlackEventParameter = EventParameter & {
     parameter: {
-        signed_secret: string
+        token: string
         text: string
     }
 }
@@ -36,7 +39,7 @@ export type GcalEventArgs = {
  * @see https://developers.google.com/apps-script/guides/properties
  */
 export type ScriptProps = {
-    slack_signed_secret: string
+    slack_verification_token: string
     calendar_id: string
 }
 

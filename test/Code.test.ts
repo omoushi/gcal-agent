@@ -1,7 +1,7 @@
 import { doPost } from "../src/Code"
 import exampleEventParameter from "./resources/example_event_parameter.json"
 import exampleScriptProperties from "./resources/example_script_properties.json"
-import { AnalysisResult, GcalEventArgs, ScriptProps, SlackEventParameter } from "../src/types";
+import { AnalysisResult, GcalEventArgs, ScriptProps, SlackEventParameter, Verification } from "../src/types";
 import TextOutput = GoogleAppsScript.Content.TextOutput;
 import { analyze } from "../src/analyzer";
 import { verify } from "../src/verifier";
@@ -18,7 +18,7 @@ jest.mock('../src/gas');
 const mockScriptProperties = <jest.Mock<ScriptProps>>scriptProperties;
 mockScriptProperties.mockReturnValue(scriptProps);
 const mockAnalyze = <jest.Mock<AnalysisResult, [string]>>analyze;
-const mockVerify = <jest.Mock<void, [string, string]>>verify;
+const mockVerify = <jest.Mock<Verification, [string, string]>>verify;
 const mockToTextOutput = <jest.Mock<TextOutput>>toTextOutput;
 const mockCreateEvent = <jest.Mock<string, [string, GcalEventArgs]>>createEvent;
 mockCreateEvent.mockImplementation((calendarId, gcalEventArgs) => gcalEventArgs.title);

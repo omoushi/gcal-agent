@@ -1,5 +1,9 @@
-export function verify(serverSecret: string, clientSecret: string): void {
-    if (clientSecret !== serverSecret) {
-        throw new Error(`incorrect secret. (clientSecret: ${clientSecret})`);
+import { Verification } from "./types";
+
+export function verify(serverToken: string, clientToken: string): Verification {
+    if (clientToken === serverToken) {
+        return { isOk: true, error: '' };
+    } else {
+        return { isOk: false, error: `トークンが違います。clientToken: ${clientToken}` };
     }
 }
