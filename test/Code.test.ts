@@ -27,12 +27,24 @@ describe('doPost', () => {
     beforeEach(() => [mockVerify, mockAnalyze, mockToTextOutput, mockToTextOutput].forEach(mock => mock.mockClear()));
     beforeEach(() => doPost(e));
 
+    describe('when verification error', () => {
+        beforeAll(() => mockVerify.mockReturnValue({ isOk: false, error: 'error' }));
+
+        it('called verifying once', () => expect(mockVerify).toHaveBeenCalledTimes(1));
+        it('called analysis never', () => expect(mockAnalyze).toHaveBeenCalledTimes(0));
+        it('called toTextOutput once', () => expect(mockToTextOutput).toHaveBeenCalledTimes(1));
+        it('called toTextOutput with collect params', () => {
+            expect(mockToTextOutput).toHaveBeenLastCalledWith({ text: 'error' });
+        });
+    });
+
     describe('when analysis error', () => {
+        beforeAll(() => mockVerify.mockReturnValue({ isOk: true, error: '' }));
         beforeAll(() => mockAnalyze.mockReturnValue({ isOk: false, error: 'error', result: null }));
 
         it('called verifying once', () => expect(mockVerify).toHaveBeenCalledTimes(1));
-        it('called validate once', () => expect(mockAnalyze).toHaveBeenCalledTimes(1));
-        it('called validate with collect params', () => {
+        it('called analysis once', () => expect(mockAnalyze).toHaveBeenCalledTimes(1));
+        it('called analysis with collect params', () => {
             expect(mockAnalyze).toHaveBeenLastCalledWith(e.parameter.text);
         });
         it('called toTextOutput once', () => expect(mockToTextOutput).toHaveBeenCalledTimes(1));
@@ -42,6 +54,7 @@ describe('doPost', () => {
     });
 
     describe('when analysis success', () => {
+        beforeAll(() => mockVerify.mockReturnValue({ isOk: true, error: '' }));
         beforeAll(() => mockAnalyze.mockReturnValue({
             isOk: true,
             error: '',
@@ -49,8 +62,8 @@ describe('doPost', () => {
         }));
 
         it('called verifying once', () => expect(mockVerify).toHaveBeenCalledTimes(1));
-        it('called validate once', () => expect(mockAnalyze).toHaveBeenCalledTimes(1));
-        it('called validate with collect params', () => {
+        it('called analysis once', () => expect(mockAnalyze).toHaveBeenCalledTimes(1));
+        it('called analysis with collect params', () => {
             expect(mockAnalyze).toHaveBeenLastCalledWith(e.parameter.text);
         });
         it('called toTextOutput once', () => expect(mockToTextOutput).toHaveBeenCalledTimes(1));
