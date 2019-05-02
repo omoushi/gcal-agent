@@ -18,6 +18,11 @@ export type SlackEventParameter = EventParameter & {
 }
 
 /**
+ * dateExtractor's result data structure.
+ */
+export type Extraction = { date: Date, error?: string }
+
+/**
  * Argument bundle type of `Calendar.createEvent`
  */
 export type GcalEventArgs = {

@@ -1,4 +1,5 @@
 import { provideNow } from "./dateProvider";
+import { Extraction } from "./types";
 
 const Patterns = {
     BASIC_MONTH_DATE: /^(\d{1,2})\/(\d{1,2})$/,
@@ -11,7 +12,7 @@ const Patterns = {
     JAPANESE_HOUR: /^(\d{1,2})時$/
 };
 
-export function extractDate(word: string): { date: Date, error?: string } {
+export function extractDate(word: string): Extraction {
     const now = provideNow();
     let matching: RegExpMatchArray | null;
     if ((matching = word.match(Patterns.BASIC_MONTH_DATE)) !== null) {
@@ -27,7 +28,7 @@ export function extractDate(word: string): { date: Date, error?: string } {
     }
 }
 
-function convert(month: number, day: number, now: Date): { date: Date, error?: string } {
+function convert(month: number, day: number, now: Date): Extraction {
     const date = new Date(now.getFullYear(), month - 1, day);
     if (isNaN(date.getTime()) || date.getMonth() + 1 !== month || date.getDate() !== day) {
         return { date: null, error: '不正な日付です。' };

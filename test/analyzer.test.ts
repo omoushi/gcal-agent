@@ -1,8 +1,9 @@
 import { analyze } from "../src/analyzer";
 import { extractableDate, extractDate } from "../src/dateExtractor";
+import { Extraction } from "../src/types";
 
 jest.mock('../src/dateExtractor');
-const mockExtractDate = <jest.Mock<{ date: Date, error?: string }, [string]>>extractDate;
+const mockExtractDate = <jest.Mock<Extraction, [string]>>extractDate;
 const mockExtractableDate = <jest.Mock<boolean, [string]>>extractableDate;
 
 describe('analyze', () => {
