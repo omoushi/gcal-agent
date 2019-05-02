@@ -1,45 +1,47 @@
-import { AnalysisNg, AnalysisOk, AnalysisResult, GcalEventArgs } from "./typings";
+import { AnalysisNg, AnalysisOk, AnalysisResult, Analyzer as IAnalyzer, GcalEventArgs } from "./api/types";
 
-export function analyze(inputText: string): AnalysisResult {
-    if (inputText === '') {
-        return analysisNg('なにか入力してください。');
+class Analyzer implements IAnalyzer {
+    analyze(inputText: string): AnalysisResult {
+        if (inputText === '') {
+            return Analyzer.ng('なにか入力してください。');
+        }
+        const lines = inputText.split(/\r\n|\r|\n/);
+
+        if (lines.length > 1) {
+            return Analyzer.ng('複数行には対応してないです。');
+        }
+        const words = lines[0].split(/\s/);
+        if (words.length === 1) {
+            return Analyzer.withOneWord(words[0]);
+        } else if (words.length === 2) {
+            return Analyzer.withTwoWord(words[0], words[1]);
+        } else {
+            return Analyzer.ng('ごめんなさい！内容が多くて把握しきれません！');
+        }
     }
-    const lines = inputText.split(/\r\n|\r|\n/);
 
-    if (lines.length > 1) {
-        return analysisNg('複数行には対応してないです。');
+    private static ng(error: string): AnalysisNg {
+        return { isOk: false, error, result: null };
     }
-    const words = lines[0].split(/\s/);
-    if (words.length === 1) {
-        return withOneWord(words[0]);
-    } else if (words.length === 2) {
-        return withTwoWord(words[0], words[1]);
-    } else {
-        return analysisNg('ごめんなさい！内容が多くて把握しきれません！');
+
+    private static ok(result: GcalEventArgs): AnalysisOk {
+        return { isOk: true, error: '', result };
     }
-}
 
-function analysisNg(error: string): AnalysisNg {
-    return { isOk: false, error, result: null };
-}
-
-function analysisOk(result: GcalEventArgs): AnalysisOk {
-    return { isOk: true, error: '', result };
-}
-
-function withOneWord(word: string): AnalysisResult {
-    const { date, error } = getDate(word);
-    if (!!error) {
-        return analysisNg(error);
+    private static withOneWord(word: string): AnalysisResult {
+        const { date, error } = getDate(word);
+        if (!!error) {
+            return Analyzer.ng(error);
+        }
+        const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 13, 0);
+        const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 18, 0);
+        const result: GcalEventArgs = { title: 'もくもく会', startDate, endDate };
+        return Analyzer.ok(result);
     }
-    const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 13, 0);
-    const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 18, 0);
-    const result: GcalEventArgs = { title: 'もくもく会', startDate, endDate };
-    return analysisOk(result);
-}
 
-function withTwoWord(word1: string, word2: string): AnalysisResult {
-    return analysisOk(null);
+    private static withTwoWord(word1: string, word2: string): AnalysisResult {
+        return Analyzer.ok(null);
+    }
 }
 
 function getDate(word: string): { date: Date, error?: string } {
@@ -58,17 +60,6 @@ function getDate(word: string): { date: Date, error?: string } {
     return { date: date };
 }
 
-const Patterns = {
-    BASIC_MONTH_DATE: /^(\d{1,2})\/(\d{1,2})$/,
-    BASIC_DATE: /^(\d{1,2})$/,
-    BASIC_HOUR_MINUTE: /^(\d{1,2}):(\d{1,2})$/,
-    BASIC_HOUR: /^(\d{1,2})$/,
-    JAPANESE_MONTH_DATE: /^(\d{1,2})月(\d{1,2})日$/,
-    JAPANESE_DATE: /^(\d{1,2})日$/,
-    JAPANESE_HOUR_MINUTE: /^(\d{1,2})時(\d{1,2})分$/,
-    JAPANESE_HOUR: /^(\d{1,2})時$/
-};
-
 function extractDate(word: string, now: Date): { month: number, day: number, error?: string } {
     let matching: RegExpMatchArray | null;
     if ((matching = word.match(Patterns.BASIC_MONTH_DATE)) !== null) {
@@ -83,3 +74,16 @@ function extractDate(word: string, now: Date): { month: number, day: number, err
         return { month: null, day: null, error: '日付がわかりませんでした。' };
     }
 }
+
+const Patterns = {
+    BASIC_MONTH_DATE: /^(\d{1,2})\/(\d{1,2})$/,
+    BASIC_DATE: /^(\d{1,2})$/,
+    BASIC_HOUR_MINUTE: /^(\d{1,2}):(\d{1,2})$/,
+    BASIC_HOUR: /^(\d{1,2})$/,
+    JAPANESE_MONTH_DATE: /^(\d{1,2})月(\d{1,2})日$/,
+    JAPANESE_DATE: /^(\d{1,2})日$/,
+    JAPANESE_HOUR_MINUTE: /^(\d{1,2})時(\d{1,2})分$/,
+    JAPANESE_HOUR: /^(\d{1,2})時$/
+};
+
+export const analyzer: Analyzer = new Analyzer();

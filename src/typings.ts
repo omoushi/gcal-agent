@@ -23,19 +23,6 @@ export type ScriptProps = {
     slack_token: string
 }
 
-/**
- * Argument bundle type of `Calendar.createEvent`
- */
-export type GcalEventArgs = {
-    title: string,
-    startDate: Date,
-    endDate: Date
-}
-
-export type AnalysisOk = { isOk: true, error: '', result: GcalEventArgs }
-export type AnalysisNg = { isOk: false, error: string, result: null }
-export type AnalysisResult = AnalysisNg | AnalysisOk
-
 //////////////////////////////////////////////////////////////////
 // Google Apps Script Domain Types
 //////////////////////////////////////////////////////////////////
