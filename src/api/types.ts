@@ -33,7 +33,6 @@ export type GcalEventArgs = {
 export type ScriptProps = {
     slack_signed_secret: string
     calendar_id: string
-    slack_token: string
 }
 
 //////////////////////////////////////////////////////////////////
