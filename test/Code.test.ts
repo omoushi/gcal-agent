@@ -34,7 +34,7 @@ describe('doPost', () => {
         it('called analysis never', () => expect(mockAnalyze).toHaveBeenCalledTimes(0));
         it('called toTextOutput once', () => expect(mockToTextOutput).toHaveBeenCalledTimes(1));
         it('called toTextOutput with collect params', () => {
-            expect(mockToTextOutput).toHaveBeenLastCalledWith({ text: 'error' });
+            expect(mockToTextOutput).toHaveBeenLastCalledWith({ response_type: 'in_channel', text: 'error' });
         });
     });
 
@@ -49,7 +49,7 @@ describe('doPost', () => {
         });
         it('called toTextOutput once', () => expect(mockToTextOutput).toHaveBeenCalledTimes(1));
         it('called toTextOutput with collect params', () => {
-            expect(mockToTextOutput).toHaveBeenLastCalledWith({ text: 'error' });
+            expect(mockToTextOutput).toHaveBeenLastCalledWith({ response_type: 'in_channel', text: 'error' });
         });
     });
 
@@ -68,7 +68,7 @@ describe('doPost', () => {
         });
         it('called toTextOutput once', () => expect(mockToTextOutput).toHaveBeenCalledTimes(1));
         it('called toTextOutput with collect params', () => {
-            expect(mockToTextOutput).toHaveBeenLastCalledWith({ text: '予定「Test Title」をカレンダーに登録しました。' });
+            expect(mockToTextOutput).toHaveBeenLastCalledWith({ response_type: 'in_channel', text: '予定「Test Title」をカレンダーに登録しました。' });
         });
     });
 });

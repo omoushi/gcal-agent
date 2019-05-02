@@ -78,5 +78,6 @@ export type EventParameter = {
  * @see https://api.slack.com/slash-commands
  */
 export type SlackResponse = {
+    response_type: string
     text: string
 }

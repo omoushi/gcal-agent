@@ -14,13 +14,13 @@ export function doPost(e: SlackEventParameter): TextOutput {
 function doProcess(e: SlackEventParameter, scriptProps: ScriptProps): SlackResponse {
     const verification = verify(scriptProps.slack_verification_token, e.parameter.token);
     if (!verification.isOk) {
-        return { text: verification.error };
+        return { response_type: 'in_channel', text: verification.error };
     }
     const analysis = analyze(e.parameter.text);
     if (analysis.isOk) {
         const title = createEvent(scriptProps.calendar_id, analysis.result);
-        return { text: `予定「${title}」をカレンダーに登録しました。` };
+        return { response_type: 'in_channel', text: `予定「${title}」をカレンダーに登録しました。` };
     } else {
-        return { text: analysis.error };
+        return { response_type: 'in_channel', text: analysis.error };
     }
 }
