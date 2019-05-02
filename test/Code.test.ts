@@ -2,10 +2,9 @@ import { doPost } from "../src/Code"
 import exampleEventParameter from "./resources/example_event_parameter.json"
 import exampleScriptProperties from "./resources/example_script_properties.json"
 import * as properties from '../src/properties'
-import * as gas from '../src/gas'
 import { AnalysisResult, ScriptProps, SlackEventParameter } from "../src/api/types";
 import TextOutput = GoogleAppsScript.Content.TextOutput;
-import { analyzer, verifier } from "../src/api/provider";
+import { analyzer, gasApiProxy, verifier } from "../src/api/provider";
 
 const e: SlackEventParameter = <SlackEventParameter>exampleEventParameter;
 const scriptProps: ScriptProps = <ScriptProps>exampleScriptProperties;
@@ -13,12 +12,11 @@ const scriptProps: ScriptProps = <ScriptProps>exampleScriptProperties;
 jest.mock('../src/properties');
 const mockScriptProperties = <jest.Mock<ScriptProps>>properties.scriptProperties;
 mockScriptProperties.mockReturnValue(scriptProps);
-jest.mock('../src/gas');
-const mockToTextOutput = <jest.Mock<TextOutput>>gas.toTextOutput;
 
 jest.mock('../src/api/provider');
 const mockAnalyze = <jest.Mock<AnalysisResult, [string]>>analyzer.analyze;
 const mockVerify = <jest.Mock<void, [string, string]>>verifier.verify;
+const mockToTextOutput = <jest.Mock<TextOutput>>gasApiProxy.toTextOutput;
 
 describe('doPost', () => {
     beforeEach(() => [mockVerify, mockAnalyze, mockToTextOutput, mockToTextOutput].forEach(mock => mock.mockClear()));

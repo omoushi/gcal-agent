@@ -1,7 +1,6 @@
 import {scriptProperties} from "./properties"
-import { toTextOutput } from "./gas"
 import TextOutput = GoogleAppsScript.Content.TextOutput;
-import { analyzer, verifier} from "./api/provider";
+import { analyzer, gasApiProxy as gas, verifier } from "./api/provider";
 import { AnalysisResult, ScriptProps, SlackEventParameter } from "./api/types";
 
 export function doPost(e: SlackEventParameter): TextOutput {
@@ -14,7 +13,7 @@ export function doPost(e: SlackEventParameter): TextOutput {
     verifier.verify(scriptProps.slack_signed_secret, e.parameter.signed_secret);
     const analysisResult: AnalysisResult = analyzer.analyze(e.parameter.text);
     if (!analysisResult.isOk) {
-        return toTextOutput({ text: analysisResult.error });
+        return gas.toTextOutput({ text: analysisResult.error });
     }
-    return toTextOutput({ text: 'analysis ok' });
+    return gas.toTextOutput({ text: 'analysis ok' });
 }
