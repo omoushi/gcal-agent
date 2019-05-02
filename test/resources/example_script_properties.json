@@ -1,5 +1,5 @@
 {
   "calendar_id": "",
   "slack_token": "",
-  "slack_signed_secret": ""
+  "slack_signed_secret": "slack signed secret"
 }

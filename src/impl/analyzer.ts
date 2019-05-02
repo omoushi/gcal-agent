@@ -1,47 +1,45 @@
-import { AnalysisNg, AnalysisOk, AnalysisResult, Analyzer as IAnalyzer, GcalEventArgs } from "../api/types";
+import { AnalysisNg, AnalysisOk, AnalysisResult, GcalEventArgs } from "../api/types";
 
-class Analyzer implements IAnalyzer {
-    analyze(inputText: string): AnalysisResult {
-        if (inputText === '') {
-            return Analyzer.ng('なにか入力してください。');
-        }
-        const lines = inputText.split(/\r\n|\r|\n/);
-
-        if (lines.length > 1) {
-            return Analyzer.ng('複数行には対応してないです。');
-        }
-        const words = lines[0].split(/\s/);
-        if (words.length === 1) {
-            return Analyzer.withOneWord(words[0]);
-        } else if (words.length === 2) {
-            return Analyzer.withTwoWord(words[0], words[1]);
-        } else {
-            return Analyzer.ng('ごめんなさい！内容が多くて把握しきれません！');
-        }
+export function analyze(inputText: string): AnalysisResult {
+    if (inputText === '') {
+        return ng('なにか入力してください。');
     }
+    const lines = inputText.split(/\r\n|\r|\n/);
 
-    private static ng(error: string): AnalysisNg {
-        return { isOk: false, error, result: null };
+    if (lines.length > 1) {
+        return ng('複数行には対応してないです。');
     }
+    const words = lines[0].split(/\s/);
+    if (words.length === 1) {
+        return withOneWord(words[0]);
+    } else if (words.length === 2) {
+        return withTwoWord(words[0], words[1]);
+    } else {
+        return ng('ごめんなさい！内容が多くて把握しきれません！');
+    }
+}
 
-    private static ok(result: GcalEventArgs): AnalysisOk {
-        return { isOk: true, error: '', result };
-    }
+function ng(error: string): AnalysisNg {
+    return { isOk: false, error, result: null };
+}
 
-    private static withOneWord(word: string): AnalysisResult {
-        const { date, error } = getDate(word);
-        if (!!error) {
-            return Analyzer.ng(error);
-        }
-        const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 13, 0);
-        const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 18, 0);
-        const result: GcalEventArgs = { title: 'もくもく会', startDate, endDate };
-        return Analyzer.ok(result);
-    }
+function ok(result: GcalEventArgs): AnalysisOk {
+    return { isOk: true, error: '', result };
+}
 
-    private static withTwoWord(word1: string, word2: string): AnalysisResult {
-        return Analyzer.ok(null);
+function withOneWord(word: string): AnalysisResult {
+    const { date, error } = getDate(word);
+    if (!!error) {
+        return ng(error);
     }
+    const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 13, 0);
+    const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 18, 0);
+    const result: GcalEventArgs = { title: 'もくもく会', startDate, endDate };
+    return ok(result);
+}
+
+function withTwoWord(word1: string, word2: string): AnalysisResult {
+    return ok(null);
 }
 
 function getDate(word: string): { date: Date, error?: string } {
@@ -85,5 +83,3 @@ const Patterns = {
     JAPANESE_HOUR_MINUTE: /^(\d{1,2})時(\d{1,2})分$/,
     JAPANESE_HOUR: /^(\d{1,2})時$/
 };
-
-export const analyzer: Analyzer = new Analyzer();

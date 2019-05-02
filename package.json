@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "clasp-push": "clasp push",
-    "clasp-do-post": "clasp run doPost --params \"$(cat test/resources/example_event_parameter.json)\""
+    "push": "clasp push",
+    "do-manyally": "bin/do_manually.sh"
   },
   "keywords": [],
   "author": "omoushi",
