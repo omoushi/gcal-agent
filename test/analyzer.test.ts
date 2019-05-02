@@ -6,7 +6,7 @@ const mockExtractDate = <jest.Mock<{ date: Date, error?: string }, [string]>>ext
 const mockExtractableDate = <jest.Mock<boolean, [string]>>extractableDate;
 
 describe('analyze', () => {
-    const year = 2019, month = 5, day = 4;
+    const dateToMock = new Date('2019-5-4');
 
     describe('when text has multiple lines', () => {
         const multiLineWord = '16\n17';
@@ -41,7 +41,7 @@ describe('analyze', () => {
         });
 
         describe('when dateExtractor could extract date', () => {
-            beforeEach(() => mockExtractDate.mockReturnValue({ date: new Date(year, month, day) }));
+            beforeEach(() => mockExtractDate.mockReturnValue({ date: dateToMock }));
 
             it('analysis is ok', () => expect(analyze(validOneWord).isOk).toBe(true));
             it('start date has 13 (default)', () => expect(analyze(validOneWord).result.startDate.getHours()).toBe(13));
@@ -68,7 +68,7 @@ describe('analyze', () => {
 
         describe('when dateExtractor regard word1 as date', () => {
             beforeEach(() => mockExtractableDate.mockImplementation(args => args === 'word1'));
-            beforeEach(() => mockExtractDate.mockReturnValue({ date: new Date(year, month, day) }));
+            beforeEach(() => mockExtractDate.mockReturnValue({ date: dateToMock }));
 
             it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
             it('start date has 13 (default)', () => expect(analyze(validTwoWord).result.startDate.getHours()).toBe(13));
@@ -77,7 +77,7 @@ describe('analyze', () => {
 
         describe('when dateExtractor regard word2 as date', () => {
             beforeEach(() => mockExtractableDate.mockImplementation(args => args === 'word2'));
-            beforeEach(() => mockExtractDate.mockReturnValue({ date: new Date(year, month, day) }));
+            beforeEach(() => mockExtractDate.mockReturnValue({ date: dateToMock }));
 
             it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
             it('start date has 13 (default)', () => expect(analyze(validTwoWord).result.startDate.getHours()).toBe(13));
