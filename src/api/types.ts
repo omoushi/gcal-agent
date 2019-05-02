@@ -36,10 +36,6 @@ export type ScriptProps = {
     slack_token: string
 }
 
-export interface GasApiProxy {
-    toTextOutput(response: SlackResponse): GoogleAppsScript.Content.TextOutput
-}
-
 //////////////////////////////////////////////////////////////////
 // Google Apps Script Domain Types
 //////////////////////////////////////////////////////////////////
