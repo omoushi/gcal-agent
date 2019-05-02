@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "push": "clasp push",
-    "do-manyally": "bin/do_manually.sh"
+    "do-process-in-gas": "bin/do_process_in_gas.sh"
   },
   "keywords": [],
   "author": "omoushi",

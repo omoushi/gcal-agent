@@ -2,7 +2,7 @@
   "queryString": "",
   "parameter": {
     "signed_secret": "slack signed secret",
-    "text": "16"
+    "text": ""
   },
   "parameters": {
     "signed_secret": ["slack signed secret"]

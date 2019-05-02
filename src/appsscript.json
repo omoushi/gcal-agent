@@ -1,9 +1,11 @@
 {
   "timeZone": "Asia/Tokyo",
-  "dependencies": {
-  },
+  "dependencies": {},
   "exceptionLogging": "STACKDRIVER",
   "executionApi": {
     "access": "ANYONE"
-  }
+  },
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/calendar"
+  ]
 }
