@@ -35,6 +35,17 @@ export type GcalEventArgs = {
 }
 
 /**
+ * Argument bundle type of `Calendar.createEvent`
+ */
+export type GoogleCalendarEvent = {
+    calendarId: string
+    title: string
+    startDate: Date
+    endDate: Date
+    guests: string
+}
+
+/**
  * Script Properties that gcal-agent specifies in Google Apps Script
  * - slack_verification_token: [verification_token for Slack](https://api.slack.com/docs/verifying-requests-from-slack)
  * - calendar_id: [id of google calendar for integration](https://docs.simplecalendar.io/find-google-calendar-id/)

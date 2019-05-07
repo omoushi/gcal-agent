@@ -1,4 +1,4 @@
-import { GcalEventArgs, SlackResponse } from "./types";
+import { GoogleCalendarEvent, SlackResponse } from "./types";
 
 export function toTextOutput(response: SlackResponse): GoogleAppsScript.Content.TextOutput {
     return ContentService
@@ -6,9 +6,9 @@ export function toTextOutput(response: SlackResponse): GoogleAppsScript.Content.
         .setMimeType(ContentService.MimeType.JSON);
 }
 
-export function createEvent(calendarId: string, args: GcalEventArgs, guests: string): string {
+export function createEvent(e: GoogleCalendarEvent): string {
     const calendarEvent = CalendarApp
-        .getCalendarById(calendarId)
-        .createEvent(args.title, args.startDate, args.endDate, { guests: guests, sendInvites: true });
+        .getCalendarById(e.calendarId)
+        .createEvent(e.title, e.startDate, e.endDate, { guests: e.guests, sendInvites: true });
     return calendarEvent.getTitle();
 }

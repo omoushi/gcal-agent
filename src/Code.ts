@@ -18,7 +18,13 @@ function doProcess(e: SlackEventParameter, scriptProps: ScriptProps): SlackRespo
     }
     const analysis = analyze(e.parameter.text);
     if (analysis.isOk) {
-        const title = createEvent(scriptProps.calendar_id, analysis.result, scriptProps.guests);
+        const title = createEvent({
+            calendarId: scriptProps.calendar_id,
+            title: analysis.result.title,
+            startDate: analysis.result.startDate,
+            endDate: analysis.result.endDate,
+            guests: scriptProps.guests
+        });
         return { response_type: 'in_channel', text: `予定「${title}」をカレンダーに登録しました。` };
     } else {
         return { response_type: 'in_channel', text: analysis.error };

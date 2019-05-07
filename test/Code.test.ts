@@ -1,7 +1,13 @@
 import { doPost } from "../src/Code"
 import exampleEventParameter from "./resources/example_event_parameter.json"
 import exampleScriptProperties from "./resources/example_script_properties.json"
-import { AnalysisResult, GcalEventArgs, ScriptProps, SlackEventParameter, Verification } from "../src/types";
+import {
+    AnalysisResult,
+    GoogleCalendarEvent,
+    ScriptProps,
+    SlackEventParameter,
+    Verification
+} from "../src/types";
 import TextOutput = GoogleAppsScript.Content.TextOutput;
 import { analyze } from "../src/analyzer";
 import { verify } from "../src/verifier";
@@ -20,8 +26,8 @@ mockScriptProperties.mockReturnValue(scriptProps);
 const mockAnalyze = <jest.Mock<AnalysisResult, [string]>>analyze;
 const mockVerify = <jest.Mock<Verification, [string, string]>>verify;
 const mockToTextOutput = <jest.Mock<TextOutput>>toTextOutput;
-const mockCreateEvent = <jest.Mock<string, [string, GcalEventArgs, string]>>createEvent;
-mockCreateEvent.mockImplementation((_calendarId, eventArgs) => eventArgs.title);
+const mockCreateEvent2 = <jest.Mock<string, [GoogleCalendarEvent]>>createEvent;
+mockCreateEvent2.mockImplementation(event => event.title);
 
 describe('doPost', () => {
     beforeEach(() => [mockVerify, mockAnalyze, mockToTextOutput, mockToTextOutput].forEach(mock => mock.mockClear()));
