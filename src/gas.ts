@@ -6,9 +6,9 @@ export function toTextOutput(response: SlackResponse): GoogleAppsScript.Content.
         .setMimeType(ContentService.MimeType.JSON);
 }
 
-export function createEvent(calendarId: string, args: GcalEventArgs): string {
+export function createEvent(calendarId: string, args: GcalEventArgs, guests: string): string {
     const calendarEvent = CalendarApp
         .getCalendarById(calendarId)
-        .createEvent(args.title, args.startDate, args.endDate);
+        .createEvent(args.title, args.startDate, args.endDate, { guests: guests, sendInvites: true });
     return calendarEvent.getTitle();
 }

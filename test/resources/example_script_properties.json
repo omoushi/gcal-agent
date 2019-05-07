@@ -1,4 +1,5 @@
 {
   "calendar_id": "",
-  "slack_verification_token": "slack signed secret"
+  "slack_verification_token": "slack signed secret",
+  "guests": ""
 }

@@ -8,8 +8,8 @@ import { verify } from "../src/verifier";
 import { createEvent, toTextOutput } from "../src/gas";
 import { scriptProperties } from "../src/properties";
 
-const e: SlackEventParameter = <SlackEventParameter>exampleEventParameter;
-const scriptProps: ScriptProps = <ScriptProps>exampleScriptProperties;
+const e: SlackEventParameter = exampleEventParameter;
+const scriptProps: ScriptProps = exampleScriptProperties;
 
 jest.mock('../src/properties');
 jest.mock('../src/analyzer');
@@ -20,8 +20,8 @@ mockScriptProperties.mockReturnValue(scriptProps);
 const mockAnalyze = <jest.Mock<AnalysisResult, [string]>>analyze;
 const mockVerify = <jest.Mock<Verification, [string, string]>>verify;
 const mockToTextOutput = <jest.Mock<TextOutput>>toTextOutput;
-const mockCreateEvent = <jest.Mock<string, [string, GcalEventArgs]>>createEvent;
-mockCreateEvent.mockImplementation((calendarId, gcalEventArgs) => gcalEventArgs.title);
+const mockCreateEvent = <jest.Mock<string, [string, GcalEventArgs, string]>>createEvent;
+mockCreateEvent.mockImplementation((_calendarId, eventArgs) => eventArgs.title);
 
 describe('doPost', () => {
     beforeEach(() => [mockVerify, mockAnalyze, mockToTextOutput, mockToTextOutput].forEach(mock => mock.mockClear()));

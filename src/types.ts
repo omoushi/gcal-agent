@@ -36,11 +36,15 @@ export type GcalEventArgs = {
 
 /**
  * Script Properties that gcal-agent specifies in Google Apps Script
+ * - slack_verification_token: [verification_token for Slack](https://api.slack.com/docs/verifying-requests-from-slack)
+ * - calendar_id: [id of google calendar for integration](https://docs.simplecalendar.io/find-google-calendar-id/)
+ * - guests: comma separated mail addresses to invite
  * @see https://developers.google.com/apps-script/guides/properties
  */
 export type ScriptProps = {
     slack_verification_token: string
     calendar_id: string
+    guests: string
 }
 
 //////////////////////////////////////////////////////////////////
@@ -59,7 +63,7 @@ export type EventParameter = {
     parameters: {
         [key: string]: string[]
     },
-    contextPath: '',
+    contextPath: string,
     contentLength: number,
     postData?: {
         length: number,
