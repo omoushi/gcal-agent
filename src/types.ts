@@ -2,8 +2,8 @@
 // gcal-agent Domain Types
 //////////////////////////////////////////////////////////////////
 
-export type AnalysisOk = { isOk: true, error: '', result: GcalEventArgs }
-export type AnalysisNg = { isOk: false, error: string, result: null }
+export type AnalysisOk = { isOk: true, error: '', data: AnalysisData }
+export type AnalysisNg = { isOk: false, error: string, data: null }
 export type AnalysisResult = AnalysisNg | AnalysisOk
 export type VerificationOk = { isOk: true, error: '' }
 export type VerificationNg = { isOk: false, error: string }
@@ -26,9 +26,9 @@ export type SlackEventParameter = EventParameter & {
 export type Extraction = { date: Date, error?: string }
 
 /**
- * Argument bundle type of `Calendar.createEvent`
+ * Result of analyzing
  */
-export type GcalEventArgs = {
+export type AnalysisData = {
     title: string,
     startDate: Date,
     endDate: Date

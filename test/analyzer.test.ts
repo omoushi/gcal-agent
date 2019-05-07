@@ -12,21 +12,21 @@ describe('analyze', () => {
     describe('when text has multiple lines', () => {
         const multiLineWord = '16\n17';
         it('validation is not ok', () => {
-            expect(analyze(multiLineWord)).toEqual({ isOk: false, error: '複数行には対応してないです。', result: null });
+            expect(analyze(multiLineWord)).toEqual({ isOk: false, error: '複数行には対応してないです。', data: null });
         });
     });
 
     describe('when text is empty', () => {
         const emptyWord = '';
         it('validation is not ok', () => {
-            expect(analyze(emptyWord)).toEqual({ isOk: false, error: 'なにか入力してください。', result: null });
+            expect(analyze(emptyWord)).toEqual({ isOk: false, error: 'なにか入力してください。', data: null });
         });
     });
 
     describe('when text has more than 2 word', () => {
         const moreThan2Word = '1 2 3';
         it('validation is not ok', () => {
-            expect(analyze(moreThan2Word)).toEqual({ isOk: false, error: 'ごめんなさい！内容が多くて把握しきれません！', result: null });
+            expect(analyze(moreThan2Word)).toEqual({ isOk: false, error: 'ごめんなさい！内容が多くて把握しきれません！', data: null });
         });
     });
 
@@ -37,7 +37,7 @@ describe('analyze', () => {
             beforeEach(() => mockExtractDate.mockReturnValue({ date: null, error: 'error' }));
 
             it('validation is not ok', () => {
-                expect(analyze(validOneWord)).toEqual({ isOk: false, error: 'error', result: null });
+                expect(analyze(validOneWord)).toEqual({ isOk: false, error: 'error', data: null });
             });
         });
 
@@ -45,8 +45,8 @@ describe('analyze', () => {
             beforeEach(() => mockExtractDate.mockReturnValue({ date: dateToMock }));
 
             it('analysis is ok', () => expect(analyze(validOneWord).isOk).toBe(true));
-            it('start date has 13 (default)', () => expect(analyze(validOneWord).result.startDate.getHours()).toBe(13));
-            it('end date has 18 (default)', () => expect(analyze(validOneWord).result.endDate.getHours()).toBe(18));
+            it('start date has 13 (default)', () => expect(analyze(validOneWord).data.startDate.getHours()).toBe(13));
+            it('end date has 18 (default)', () => expect(analyze(validOneWord).data.endDate.getHours()).toBe(18));
         });
     });
 
@@ -72,8 +72,8 @@ describe('analyze', () => {
             beforeEach(() => mockExtractDate.mockReturnValue({ date: dateToMock }));
 
             it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
-            it('start date has 13 (default)', () => expect(analyze(validTwoWord).result.startDate.getHours()).toBe(13));
-            it('end date has 18 (default)', () => expect(analyze(validTwoWord).result.endDate.getHours()).toBe(18));
+            it('start date has 13 (default)', () => expect(analyze(validTwoWord).data.startDate.getHours()).toBe(13));
+            it('end date has 18 (default)', () => expect(analyze(validTwoWord).data.endDate.getHours()).toBe(18));
         });
 
         describe('when dateExtractor regard word2 as date', () => {
@@ -81,8 +81,8 @@ describe('analyze', () => {
             beforeEach(() => mockExtractDate.mockReturnValue({ date: dateToMock }));
 
             it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
-            it('start date has 13 (default)', () => expect(analyze(validTwoWord).result.startDate.getHours()).toBe(13));
-            it('end date has 18 (default)', () => expect(analyze(validTwoWord).result.endDate.getHours()).toBe(18));
+            it('start date has 13 (default)', () => expect(analyze(validTwoWord).data.startDate.getHours()).toBe(13));
+            it('end date has 18 (default)', () => expect(analyze(validTwoWord).data.endDate.getHours()).toBe(18));
         });
     });
 });

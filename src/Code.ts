@@ -16,17 +16,17 @@ function doProcess(e: SlackEventParameter, scriptProps: ScriptProps): SlackRespo
     if (!verification.isOk) {
         return { response_type: 'in_channel', text: verification.error };
     }
-    const analysis = analyze(e.parameter.text);
-    if (analysis.isOk) {
+    const { isOk, data, error } = analyze(e.parameter.text);
+    if (isOk) {
         const title = createEvent({
             calendarId: scriptProps.calendar_id,
-            title: analysis.result.title,
-            startDate: analysis.result.startDate,
-            endDate: analysis.result.endDate,
+            title: data.title,
+            startDate: data.startDate,
+            endDate: data.endDate,
             guests: scriptProps.guests
         });
         return { response_type: 'in_channel', text: `予定「${title}」をカレンダーに登録しました。` };
     } else {
-        return { response_type: 'in_channel', text: analysis.error };
+        return { response_type: 'in_channel', text: error };
     }
 }

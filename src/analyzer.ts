@@ -1,4 +1,4 @@
-import { AnalysisNg, AnalysisOk, AnalysisResult, GcalEventArgs } from "./types";
+import { AnalysisNg, AnalysisOk, AnalysisResult, AnalysisData } from "./types";
 import { extractableDate, extractDate } from "./dateExtractor";
 
 export function analyze(inputText: string): AnalysisResult {
@@ -20,11 +20,11 @@ export function analyze(inputText: string): AnalysisResult {
 }
 
 function ng(error: string): AnalysisNg {
-    return { isOk: false, error, result: null };
+    return { isOk: false, error, data: null };
 }
 
-function ok(result: GcalEventArgs): AnalysisOk {
-    return { isOk: true, error: '', result };
+function ok(data: AnalysisData): AnalysisOk {
+    return { isOk: true, error: '', data: data };
 }
 
 /**
@@ -47,7 +47,7 @@ function withTwoWord(word1: string, word2: string): AnalysisResult {
     const isWord1Date = extractableDate(word1);
     const isWord2Date = extractableDate(word2);
     if (isWord1Date && isWord2Date) {
-        return { isOk: false, error: 'ごめん！連日登録はまだ対応してない！', result: null };
+        return { isOk: false, error: 'ごめん！連日登録はまだ対応してない！', data: null };
     } else if (isWord1Date) {
         const { date } = extractDate(word1);
         return ok(makeGcalEventArgs(date, word2));
@@ -55,7 +55,7 @@ function withTwoWord(word1: string, word2: string): AnalysisResult {
         const { date } = extractDate(word2);
         return ok(makeGcalEventArgs(date, word1));
     } else {
-        return { isOk: false, error: '日付がわかりませんでした。', result: null };
+        return { isOk: false, error: '日付がわかりませんでした。', data: null };
     }
 }
 

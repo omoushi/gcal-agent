@@ -46,7 +46,7 @@ describe('doPost', () => {
 
     describe('when analysis error', () => {
         beforeAll(() => mockVerify.mockReturnValue({ isOk: true, error: '' }));
-        beforeAll(() => mockAnalyze.mockReturnValue({ isOk: false, error: 'error', result: null }));
+        beforeAll(() => mockAnalyze.mockReturnValue({ isOk: false, error: 'error', data: null }));
 
         it('called verifying once', () => expect(mockVerify).toHaveBeenCalledTimes(1));
         it('called analysis once', () => expect(mockAnalyze).toHaveBeenCalledTimes(1));
@@ -64,7 +64,7 @@ describe('doPost', () => {
         beforeAll(() => mockAnalyze.mockReturnValue({
             isOk: true,
             error: '',
-            result: { title: 'Test Title', startDate: new Date(), endDate: new Date() }
+            data: { title: 'Test Title', startDate: new Date(), endDate: new Date() }
         }));
 
         it('called verifying once', () => expect(mockVerify).toHaveBeenCalledTimes(1));
