@@ -33,7 +33,7 @@ function ok(data: AnalysisData): AnalysisOk {
 function withOneWord(word: string): AnalysisResult {
     const { date, error } = extractDate(word);
     if (!error) {
-        return ok(makeGcalEventArgs(date));
+        return ok(makeAnalysisData(date));
     } else {
         return ng(error);
     }
@@ -50,10 +50,10 @@ function withTwoWord(word1: string, word2: string): AnalysisResult {
         return { isOk: false, error: 'ごめん！連日登録はまだ対応してない！', data: null };
     } else if (isWord1Date) {
         const { date } = extractDate(word1);
-        return ok(makeGcalEventArgs(date, word2));
+        return ok(makeAnalysisData(date, word2));
     } else if (isWord2Date) {
         const { date } = extractDate(word2);
-        return ok(makeGcalEventArgs(date, word1));
+        return ok(makeAnalysisData(date, word1));
     } else {
         return { isOk: false, error: '日付がわかりませんでした。', data: null };
     }
@@ -63,7 +63,7 @@ const DEFAULT_TITLE = 'もくもく会';
 const DEFAULT_START_HOUR = 13;
 const DEFAULT_END_HOUR = 18;
 
-function makeGcalEventArgs(date, title = DEFAULT_TITLE) {
+function makeAnalysisData(date, title = DEFAULT_TITLE): AnalysisData {
     const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), DEFAULT_START_HOUR, 0);
     const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), DEFAULT_END_HOUR, 0);
     return { title: (title || DEFAULT_TITLE), startDate, endDate };
