@@ -46,6 +46,14 @@ export type GoogleCalendarEvent = {
 }
 
 /**
+ * Just bundle of  hour and minute
+ */
+export type HourMinute = {
+    hour: number
+    minute: number
+}
+
+/**
  * Script Properties that gcal-agent specifies in Google Apps Script
  * - slack_verification_token: [verification_token for Slack](https://api.slack.com/docs/verifying-requests-from-slack)
  * - calendar_id: [id of google calendar for integration](https://docs.simplecalendar.io/find-google-calendar-id/)

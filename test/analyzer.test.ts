@@ -7,7 +7,8 @@ const mockExtractDate = <jest.Mock<Extraction, [string]>>extractDate;
 const mockExtractableDate = <jest.Mock<boolean, [string]>>extractableDate;
 
 describe('analyze', () => {
-    const dateToMock = new Date('2019-5-4');
+    const weekday = new Date('2019-5-3'); // friday
+    const weekend = new Date('2019-5-4'); // saturday
 
     describe('when text has multiple lines', () => {
         const multiLineWord = '16\n17';
@@ -42,11 +43,33 @@ describe('analyze', () => {
         });
 
         describe('when dateExtractor could extract date', () => {
-            beforeEach(() => mockExtractDate.mockReturnValue({ date: dateToMock }));
+            describe('when weekday', () => {
+                beforeEach(() => mockExtractDate.mockReturnValue({ date: weekday }));
 
-            it('analysis is ok', () => expect(analyze(validOneWord).isOk).toBe(true));
-            it('start date has 13 (default)', () => expect(analyze(validOneWord).data.startDate.getHours()).toBe(13));
-            it('end date has 18 (default)', () => expect(analyze(validOneWord).data.endDate.getHours()).toBe(18));
+                it('analysis is ok', () => expect(analyze(validOneWord).isOk).toBe(true));
+                it('start date is at 19:30 (default)', () => {
+                    expect(analyze(validOneWord).data.startDate.getHours()).toBe(19)
+                    expect(analyze(validOneWord).data.startDate.getMinutes()).toBe(30)
+                });
+                it('end date is at 21:00 (default)', () => {
+                    expect(analyze(validOneWord).data.endDate.getHours()).toBe(21)
+                    expect(analyze(validOneWord).data.endDate.getMinutes()).toBe(0)
+                });
+            })
+
+            describe('when weekend', () => {
+                beforeEach(() => mockExtractDate.mockReturnValue({ date: weekend }));
+
+                it('analysis is ok', () => expect(analyze(validOneWord).isOk).toBe(true));
+                it('start date is at 13:00 (default)', () => {
+                    expect(analyze(validOneWord).data.startDate.getHours()).toBe(13)
+                    expect(analyze(validOneWord).data.startDate.getMinutes()).toBe(0)
+                });
+                it('end date is at 18:00 (default)', () => {
+                    expect(analyze(validOneWord).data.endDate.getHours()).toBe(18)
+                    expect(analyze(validOneWord).data.endDate.getMinutes()).toBe(0)
+                });
+            })
         });
     });
 
@@ -69,20 +92,66 @@ describe('analyze', () => {
 
         describe('when dateExtractor regard word1 as date', () => {
             beforeEach(() => mockExtractableDate.mockImplementation(args => args === 'word1'));
-            beforeEach(() => mockExtractDate.mockReturnValue({ date: dateToMock }));
 
-            it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
-            it('start date has 13 (default)', () => expect(analyze(validTwoWord).data.startDate.getHours()).toBe(13));
-            it('end date has 18 (default)', () => expect(analyze(validTwoWord).data.endDate.getHours()).toBe(18));
+            describe('when weekday', () => {
+                beforeEach(() => mockExtractDate.mockReturnValue({ date: weekday }));
+
+                it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
+                it('start date is at 19:30 (default)', () => {
+                    expect(analyze(validTwoWord).data.startDate.getHours()).toBe(19)
+                    expect(analyze(validTwoWord).data.startDate.getMinutes()).toBe(30)
+                });
+                it('end date is at 21:00 (default)', () => {
+                    expect(analyze(validTwoWord).data.endDate.getHours()).toBe(21)
+                    expect(analyze(validTwoWord).data.endDate.getMinutes()).toBe(0)
+                });
+            });
+
+            describe('when weekend', () => {
+                beforeEach(() => mockExtractDate.mockReturnValue({ date: weekend }));
+
+                it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
+                it('start date is at 13:00 (default)', () => {
+                    expect(analyze(validTwoWord).data.startDate.getHours()).toBe(13)
+                    expect(analyze(validTwoWord).data.startDate.getMinutes()).toBe(0)
+                });
+                it('end date is at 18:00 (default)', () => {
+                    expect(analyze(validTwoWord).data.endDate.getHours()).toBe(18)
+                    expect(analyze(validTwoWord).data.endDate.getMinutes()).toBe(0)
+                });
+            });
         });
 
         describe('when dateExtractor regard word2 as date', () => {
             beforeEach(() => mockExtractableDate.mockImplementation(args => args === 'word2'));
-            beforeEach(() => mockExtractDate.mockReturnValue({ date: dateToMock }));
 
-            it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
-            it('start date has 13 (default)', () => expect(analyze(validTwoWord).data.startDate.getHours()).toBe(13));
-            it('end date has 18 (default)', () => expect(analyze(validTwoWord).data.endDate.getHours()).toBe(18));
+            describe('when weekday', () => {
+                beforeEach(() => mockExtractDate.mockReturnValue({ date: weekday }));
+
+                it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
+                it('start date is at 19:30 (default)', () => {
+                    expect(analyze(validTwoWord).data.startDate.getHours()).toBe(19)
+                    expect(analyze(validTwoWord).data.startDate.getMinutes()).toBe(30)
+                });
+                it('end date is at 21:00 (default)', () => {
+                    expect(analyze(validTwoWord).data.endDate.getHours()).toBe(21)
+                    expect(analyze(validTwoWord).data.endDate.getMinutes()).toBe(0)
+                });
+            });
+
+            describe('when weekend', () => {
+                beforeEach(() => mockExtractDate.mockReturnValue({ date: weekend }));
+
+                it('analysis is ok', () => expect(analyze(validTwoWord).isOk).toBe(true));
+                it('start date is at 13:00 (default)', () => {
+                    expect(analyze(validTwoWord).data.startDate.getHours()).toBe(13)
+                    expect(analyze(validTwoWord).data.startDate.getMinutes()).toBe(0)
+                });
+                it('end date is at 18:00 (default)', () => {
+                    expect(analyze(validTwoWord).data.endDate.getHours()).toBe(18)
+                    expect(analyze(validTwoWord).data.endDate.getMinutes()).toBe(0)
+                });
+            })
         });
     });
 });

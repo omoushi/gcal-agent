@@ -1,4 +1,4 @@
-import { AnalysisNg, AnalysisOk, AnalysisResult, AnalysisData } from "./types";
+import { AnalysisNg, AnalysisOk, AnalysisResult, AnalysisData, HourMinute } from "./types";
 import { extractableDate, extractDate } from "./dateExtractor";
 
 export function analyze(inputText: string): AnalysisResult {
@@ -60,11 +60,19 @@ function withTwoWord(word1: string, word2: string): AnalysisResult {
 }
 
 const DEFAULT_TITLE = 'もくもく会';
-const DEFAULT_START_HOUR = 13;
-const DEFAULT_END_HOUR = 18;
 
-function makeAnalysisData(date, title = DEFAULT_TITLE): AnalysisData {
-    const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), DEFAULT_START_HOUR, 0);
-    const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), DEFAULT_END_HOUR, 0);
+function makeAnalysisData(date: Date, title: string = DEFAULT_TITLE): AnalysisData {
+    const [startTime, endTime] = defaultStartEndTime(date)
+    const startDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), startTime.hour, startTime.minute);
+    const endDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), endTime.hour, endTime.minute);
     return { title: (title || DEFAULT_TITLE), startDate, endDate };
+}
+
+function defaultStartEndTime(date: Date): [HourMinute, HourMinute] {
+    switch (date.getDay()) {
+        case 0: case 6: // weekend ( sunday and saturday )
+            return [{ hour: 13, minute: 0 },  { hour: 18, minute: 0 }]
+        default: // weekday
+            return [{ hour: 19, minute: 30 }, { hour: 21, minute: 0 }]
+    }
 }
